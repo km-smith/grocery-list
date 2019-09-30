@@ -2,17 +2,24 @@ on: [push]
 
 jobs:
   build:
-    name: 'Build'
-    runs-on: 'ubuntu-latest'
+    name: Build
+    runs-on: ubuntu-latest
     steps:
     - name: Install Dependencies
       run: npm install
     - name: Build App
       run: npm build
+    - name: Display Directory
+      run: ls -la
+      shell: bash
   test:
-    name: 'Test'
-    needs: 'build'
-    runs-on: 'ubuntu-latest'
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
     steps:
+    - name: Display Directory
+      run: ls -la
+      shell: bash
     - name: Test App
       run: npm test
+      working-directory: '/'
