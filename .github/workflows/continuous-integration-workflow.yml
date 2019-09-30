@@ -1,19 +1,14 @@
 on: [push]
 
 jobs:
-  build:
-    name: Build
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@master
     - name: Install Dependencies
       run: npm install
-    - name: Build App
-      run: npm build
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-    - name: Install Dependencies
-      run: npm install
-    - name: Test App
+    - name: Build
+      run: npm test
+    - name: Test
       run: npm test
