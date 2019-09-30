@@ -1,21 +1,33 @@
 on: [push]
 
 jobs:
-  jack-of-all-trades:
-    name: Build, Test and Artifact
+  test:
+    name: Test
     runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@master
-    - name: Install Dependencies
-      run: npm install
-    - name: Build
-      run: npm build
-    - name: Test
-      run: npm test
-    - name: Deploy to Firebase
-      uses: w9jds/firebase-action@master
+    - uses: actions/checkout@master
+    - run: npm install
+    - run: npm test
+  build:
+    name: Build
+    needs: test
+    runs-on: ubuntu-latest
+    - uses: actions/checkout@master
+    - run: npm install
+    - run: npm build
+    - uses: actions/upload-artifact@master
       with:
-        args: deploy --only hosting
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        name: app
+        path: public
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+      - uses: actions/checkout@master
+      - uses: actions/download-artifact@master
+        with:
+          name: app
+      - uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
