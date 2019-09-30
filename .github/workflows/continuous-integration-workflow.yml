@@ -1,7 +1,7 @@
 on: [push]
 
 jobs:
-  build-test-artifact:
+  jack-of-all-trades:
     name: Build, Test and Artifact
     runs-on: ubuntu-latest
     steps:
@@ -12,25 +12,7 @@ jobs:
       run: npm build
     - name: Test
       run: npm test
-    - name: Copy public to dist
-      run: cp -r public dist
-      shell: bash
-    - name: Upload dist
-      uses: actions/upload-artifact@master
-      with:
-        name: artifact
-        path: dist
-  deploy:
-    name: Deploy
-    needs: build-test-artifact
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: artifact
-      - name: Deploy to Firebase
+    - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
