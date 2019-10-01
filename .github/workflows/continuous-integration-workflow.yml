@@ -16,6 +16,8 @@ jobs:
     - uses: actions/checkout@master
     - run: npm install
     - run: npm build
+    - run: ls -ls public
+      shell: bash
     - uses: actions/upload-artifact@master
       with:
         name: app
