@@ -18,7 +18,7 @@ jobs:
     - run: npm run build
     - uses: actions/upload-artifact@master
       with:
-        name: app
+        name: app-bundle
         path: public
   deploy:
     name: Deploy
@@ -28,7 +28,8 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/download-artifact@master
         with:
-          name: app
+          name: app-bundle
+          path: public
       - uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
