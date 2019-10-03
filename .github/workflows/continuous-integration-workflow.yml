@@ -8,8 +8,9 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 1
-    - run: npm install
-    - run: npm run test
+    - run: |
+        npm install
+        npm run test
   build:
     name: Build
     needs: test
@@ -18,8 +19,9 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 1
-    - run: npm install
-    - run: npm run build
+    - run: |
+        npm install
+        npm run build
     - uses: actions/upload-artifact@master
       with:
         name: app-bundle
