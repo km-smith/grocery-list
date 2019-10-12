@@ -1,6 +1,16 @@
 {
   "name": "svelte-app",
   "version": "1.0.0",
+  "scripts": {
+    "build": "rollup -c",
+    "autobuild": "rollup -c -w",
+    "dev": "run-p start autobuild",
+    "start": "firebase serve --only hosting",
+    "test": "jest"
+  },
+  "dependencies": {
+    "firebase": "^7.2.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
@@ -17,12 +27,5 @@
     "rollup-plugin-terser": "^4.0.4",
     "svelte": "^3.0.0",
     "svelte-preprocess": "^3.1.2"
-  },
-  "scripts": {
-    "build": "rollup -c",
-    "autobuild": "rollup -c -w",
-    "dev": "run-p start autobuild",
-    "start": "firebase serve --only hosting",
-    "test": "jest"
   }
 }
