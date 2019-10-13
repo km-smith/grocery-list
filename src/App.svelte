@@ -1,30 +1,25 @@
 <script>
-  import firebase from 'firebase/app';
-  import 'firebase/auth';
+  import {firebase, auth, getAppConfig} from './utils/firebase.js';
+  import {setContext, APP_INIT} from './utils/context.js';
+  import Login from './components/Login.svelte';
+  import MealList from './components/MealList.svelte';
 
   const initialization = (async function() {
-    const response = await fetch('/__/firebase/init.json');
-    firebase.initializeApp(await response.json());
+    firebase.initializeApp(await getAppConfig());
+    return await firebase.auth().getRedirectResult();
   }());
 
-  (async function() {
-    await initialization;
-    const result = await firebase.auth().getRedirectResult();
-    console.log(result);
-  }());
-
-  function handleSignInClick() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope('email');
-    firebase.auth().signInWithRedirect(provider);
-  }
+  setContext(APP_INIT, initialization);
 </script>
 
 {#await initialization}
-	<!-- promise is pending -->
-	<p>waiting for the promise to resolve...</p>
-{:then value}
-	<button on:click={handleSignInClick}>Sign In</button>
+	<p>Bootstrapping the app...</p>
+{:then currentUser}
+  {#if currentUser.user === null}
+    <Login/>
+  {:else}
+    <MealList/>
+  {/if}
 {:catch error}
 	<p>Something went wrong: {error.message}</p>
 {/await}
